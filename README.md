@@ -228,6 +228,34 @@ head m01_vfdb.tab
 /home/alumno01/genomics/annotation/prokka/m01.fna       plasmid_01a     14547   14882   -       pirA    1-336/336       =============== 0/0     100.00  100.00  vfdb    AKC05671        (pirA) Photorhabdus insect-related toxin subunit PirA [PirAB (VF1362) - Exotoxin (VFC0235)] [Vibrio parahaemolyticus str. 3HP]	
 ```
 
+> **Comentario:** 
+> - `#FILE`: Indica la ruta y el nombre del archivo de entrada analizado por Abricate: /home/alumno01/genomics/annotation/prokka/m01.fna.
+> - `SEQUENCE`: Muestra el identificador de la secuencia (contig o cromosoma) donde se encontró la coincidencia: chr01 o plasmid_01a.
+> - `START`: Especifica la posición inicial de la coincidencia en la secuencia de entrada (en pares de bases).
+> - `END`: Especifica la posición final de la coincidencia en la secuencia de entrada (en pares de bases).
+> - `STRAND`: Indica la hebra de ADN de la secuencia de entrada donde se localiza la coincidencia (+ para la hebra directa, - para la hebra complementaria).
+> - `GENE`: Muestra el nombre del gen encontrado en la base de datos que coincide con la secuencia analizada (ej., cheY, cheW, vcrH, vscN, vscF, pirB, pirA).
+> - `COVERAGE`: Indica la proporción del gen de la base de datos cubierta por la coincidencia en la secuencia de entrada (ej., 1-369/369).
+> - `COVERAGE_MAP`: Proporciona una representación visual de la cobertura de la alineación (= para regiones coincidentes, otros caracteres para gaps).
+> - `GAPS`: Muestra el número y la longitud total de los gaps (inserciones o deleciones) en la alineación (ej., 0/0).
+> - `%COVERAGE`: Indica el porcentaje de la longitud del gen de la base de datos que está cubierta por la secuencia de entrada.
+> - `%IDENTITY`: Muestra el porcentaje de identidad entre la secuencia de entrada y la secuencia del gen en la base de datos en la región alineada.
+> - `DATABASE`: Especifica la base de datos utilizada para la comparación: vfdb (Virulence Factors Database).
+> - `ACCESSION`: Proporciona el número de acceso del registro coincidente en la base de datos (ej., WP_000697869, AKC05670).
+> - `PRODUCT`: Describe la función o el nombre del producto génico anotado en la base de datos, incluyendo información sobre vías o sistemas relacionados.
+> - `RESISTANCE`: En el contexto de VFDB, esta columna podría contener información adicional relacionada con la virulencia, aunque en este caso parece estar vacía o no directamente relacionada con resistencia a antibióticos.
+
+
+
+
+
+usa este formato  > - `--db vfdb`:
+
+
+
+
+
+
 ## 5. Identificación de genes de resistencia a antibióticos
 
 ```bash
