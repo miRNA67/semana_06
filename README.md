@@ -12,7 +12,7 @@ Al finalizar la unidad, el estudiante utiliza herramientas bioinformáticas para
 4. Identificación de genes de resistencia a antibióticos
 5. Identificación de elementos móviles
 6. Identificación de rutas metabólicas
-7. Identificación de genes de biosíntesis de metabolitos secundarios
+7. Identificación de clústeres de genes de biosíntesis de metabolitos secundarios
 8. Visualización de la anotación de un genoma
 
 ## Programas requeridos:
@@ -353,31 +353,45 @@ mge_no,name,synonyms,prediction,type,allele_len,depth,e_value,identity,coverage,
 
 ## 6. Identificación de rutas metabólicas
 
-```bash
-Ir a la pagina web de KAAS (https://www.genome.jp/kegg/kaas/)
-```
-```bash
-Hacer clic en KAAS job request
-```
+### Ir a la pagina web de KAAS (https://www.genome.jp/kegg/kaas/)
+
+### Hacer clic en KAAS job request
+
 <img width="681" alt="image" src="https://github.com/user-attachments/assets/79333efb-e92d-4ec5-ad25-1cdc4ba7be86" />
 
+### Clic en seleccionar archivo y escoger el archivo FAA del genoma, colocar en query name e e-mail address lo que corresponda, seleccionar en GENES data set la opción for Prokaryotes, y luego presionar en Compute
 
-```bash
-Clic en seleccionar archivo y escoger el archivo FAA del genoma, colocar en query name e e-mail address lo que corresponda, seleccionar en GENES data set la opción for Prokaryotes, y luego presionar en Compute
-```
 <img width="521" alt="image" src="https://github.com/user-attachments/assets/a9bd91b6-8d9e-4ded-b9e7-706373a7ad6a" />
 
+### Revisar su e-mail y dar clic en Submit
 
-```bash
-Revisar su e-mail y dar clic en Submit
-```
+### Hacer clic en html
 
-
-```bash
-Hacer clic en html
-```
 <img width="287" alt="image" src="https://github.com/user-attachments/assets/4e8a1196-68d9-4560-8028-052c5fd9023d" />
 
+### Explorar los resultados
+
+<img width="330" alt="image" src="https://github.com/user-attachments/assets/1bcea43b-3b75-4916-907a-6fd170767772" />
+
+### Explorar los resultados
+
+<img width="427" alt="image" src="https://github.com/user-attachments/assets/3c0a54d4-f110-4ac7-b3b1-ee38251c2b61" />
+
+<img width="694" alt="image" src="https://github.com/user-attachments/assets/0e07f44b-355d-40e2-b5a3-613aaeb8f993" />
+
+## 7. Identificación de clústeres de genes de biosíntesis de metabolitos secundarios
+
+### Ir a la pagina web de antiSMASH (https://antismash.secondarymetabolites.org/#!/start)
+
+### Clic en Upload file y escoger el archivo FASTA del genoma, colocar el Detection strictness en strict, seleccionar All on la opción Extra features, y luego presionar en Submit
+
+<img width="534" alt="image" src="https://github.com/user-attachments/assets/3f1b86f4-3628-4f25-a5cf-5d261ba743df" />
+
+### Explorar los resultados
+
+<img width="509" alt="image" src="https://github.com/user-attachments/assets/06580a7f-3c4d-44d5-95ad-82f9397a69f1" />
+
+<img width="695" alt="image" src="https://github.com/user-attachments/assets/6b030610-5686-4ebc-acd7-cd9be363f14d" />
 
 
 
