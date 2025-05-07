@@ -11,9 +11,11 @@ Al finalizar la unidad, el estudiante utiliza herramientas bioinformáticas para
 3. Identificación de genes de virulencia
 4. Identificación de genes de resistencia a antibióticos
 5. Identificación de elementos móviles
-6. Identificación de rutas metabólicas
-7. Identificación de clústeres de genes de biosíntesis de metabolitos secundarios
-8. Visualización del genoma
+6. Identificación de plásmidos
+7. Identificación de rutas metabólicas
+8. Identificación de clústeres de genes de biosíntesis de metabolitos secundarios
+9. Visualización del genoma
+10. Anotación del genoma generado en el curso
 
 ## Programas requeridos:
 
@@ -35,6 +37,9 @@ MGCplotter v1.0.1 https://github.com/moshi4/MGCplotter/
 
 MobileElementFinder v1.1.2 https://pypi.org/project/MobileElementFinder/
    - **Descripción:** MobileElementFinder es un servidor web y una herramienta de Python para detectar elementos genéticos móviles (MGEs) en datos de secuencias ensambladas. Anota su relación con la resistencia a antibióticos, genes de virulencia y plásmidos. Puede detectar MITEs, ISs, ComTns, Tns, ICEs, IMEs y CIMEs. Requiere secuencias contiguas ensambladas como entrada.
+
+MOB-suite v3.1.9 https://github.com/phac-nml/mob-suite
+   - **Descripción:** Es una colección de herramientas bioinformáticas para el análisis de elementos genéticos móviles (MGEs) en ensamblajes de genomas bacterianos. Incluye herramientas como MOB-typer y MOB-recon. MOB-typer, dentro de MOB-suite, analiza ensamblajes genómicos para identificar y clasificar plásmidos basándose en la presencia de genes clave como replicones y sistemas de movilización, prediciendo así su tipo, capacidad de transferencia y posible rango de huéspedes. Por otro lado, MOB-recon utiliza esta información, junto con bases de datos de referencia, para intentar reconstruir las secuencias completas de los plásmidos a partir de ensamblajes fragmentados, agrupando contigs que se cree que pertenecen al mismo plásmido y proporcionando informes detallados sobre sus características.
 
 Prinseq v0.20.4 https://prinseq.sourceforge.net/
    - **Descripción:** Es un programa bioinformático escrito en Perl que se utiliza para el control de calidad, el filtrado y el formateo de datos de secuencias de alto rendimiento (high-throughput sequencing), como las lecturas obtenidas de secuenciadores Illumina, PacBio o Nanopore. La versión lite es una versión "ligera" de PRINSEQ (PRocessing and INformation of SEQuence data). En esencia, PRINSEQ-lite te permite limpiar y preparar tus datos de secuenciación antes de realizar análisis posteriores, como el ensamblaje de genomas, el mapeo de lecturas o el análisis de expresión génica.
@@ -346,7 +351,161 @@ mge_no,name,synonyms,prediction,type,allele_len,depth,e_value,identity,coverage,
 > - `end`: La posición final (en pares de bases) del MGE predicho en el contig.
 > - `cigar`: Una representación compacta de la alineación (Compact Idiosyncratic Gapped Alignment Report). Describe las operaciones de alineamiento (ej., M para match/mismatch, I para inserción, D para deleción) y sus longitudes.
 
-## 6. Identificación de rutas metabólicas
+## 6. Identificación de plásmidos
+
+```bash
+cd ~/genomics/annotation
+
+mkdir plasmid
+
+cd plasmid
+
+mob_recon --infile ~/genomics/annotation/prokka/m01.fna --outdir m01_plasmid
+```
+
+> **Comentario:**
+> - `mob_recon`: Este es el comando principal para ejecutar MOB-recon (Mobile Element Best Representative CONtigs). MOB-recon es una herramienta bioinformática diseñada para reconstruir y caracterizar plásmidos a partir de ensamblajes de genomas bacterianos. Utiliza la información de contigs y los resultados de MOB-typer para agrupar contigs que probablemente pertenezcan al mismo plásmido.
+> - `--infile ~/genomics/annotation/prokka/m01.fna`: Especifica la ruta al archivo de entrada, que debe ser el ensamblaje del genoma en formato FASTA. En este caso, estás proporcionando el mismo archivo (m01.fna) que probablemente contiene tanto secuencias cromosómicas como plasmídicas ensambladas. MOB-recon analizará este archivo para identificar y agrupar los contigs plasmídicos.
+> - `--outdir m01_plasmid`: Define el directorio de salida donde MOB-recon guardará los resultados de su análisis. Se creará una carpeta llamada m01_plasmid en el directorio donde ejecutas el comando. Esta carpeta contendrá los archivos generados por MOB-recon, que incluirán información sobre los plásmidos identificados, sus secuencias reconstruidas (si es posible) y otros metadatos.
+
+```bash
+ls -lh m01_plasmid
+
+total 5,9M
+-rw-rw-r-- 1 alumno04 alumno04  860 may  7 11:29 biomarkers.blast.txt
+-rw-rw-r-- 1 alumno04 alumno04 5,6M may  7 11:29 chromosome.fasta
+-rw-rw-r-- 1 alumno04 alumno04 1,5K may  7 11:29 contig_report.txt
+-rw-rw-r-- 1 alumno04 alumno04 9,3K may  7 11:29 mge.report.txt
+-rw-rw-r-- 1 alumno04 alumno04 1,1K may  7 11:29 mobtyper_results.txt
+-rw-rw-r-- 1 alumno04 alumno04  68K may  7 11:29 plasmid_AD413.fasta
+-rw-rw-r-- 1 alumno04 alumno04 138K may  7 11:29 plasmid_AE795.fasta
+```
+
+```bash
+cat m01_plasmid/mge.report.txt
+
+sample_id       molecule_type   primary_cluster_id      secondary_cluster_id    contig_id       size    gc      md5     mge_id  mge_acs mge_type        mge_subtype     mge_length      mge_start mge_end contig_start    contig_end      length  sstrand qcovhsp pident  evalue  bitscore
+m01_flye.racon  chromosome                      chr01   3620046 0.45565498338971383     ab3305ab19034af2b5bb4378f5ddd0e6        01400   CP016586.1      23s-rRNA        23S     3027    658       3027    187     2552
+m01_flye.racon  chromosome                      chr01   3620046 0.45565498338971383     ab3305ab19034af2b5bb4378f5ddd0e6        01399   CP016586.1      16s-rRNA        16S     1554    11544     3812    5367
+m01_flye.racon  chromosome                      chr01   3620046 0.45565498338971383     ab3305ab19034af2b5bb4378f5ddd0e6        01106   CP022101        ISVa15  IS630   1101    1       1101      77461   78561
+m01_flye.racon  chromosome                      chr01   3620046 0.45565498338971383     ab3305ab19034af2b5bb4378f5ddd0e6        01399   CP016586.1      16s-rRNA        16S     1554    11544     121853  123407
+m01_flye.racon  chromosome                      chr01   3620046 0.45565498338971383     ab3305ab19034af2b5bb4378f5ddd0e6        01400   CP016586.1      23s-rRNA        23S     3027    658       3027    124612  126977
+m01_flye.racon  chromosome                      chr01   3620046 0.45565498338971383     ab3305ab19034af2b5bb4378f5ddd0e6        01399   CP016586.1      16s-rRNA        16S     1554    11544     167288  168842
+m01_flye.racon  chromosome                      chr01   3620046 0.45565498338971383     ab3305ab19034af2b5bb4378f5ddd0e6        01400   CP016586.1      23s-rRNA        23S     3027    658       3027    169912  172277
+m01_flye.racon  chromosome                      chr01   3620046 0.45565498338971383     ab3305ab19034af2b5bb4378f5ddd0e6        01399   CP016586.1      16s-rRNA        16S     1554    11544     227235  228789
+m01_flye.racon  chromosome                      chr01   3620046 0.45565498338971383     ab3305ab19034af2b5bb4378f5ddd0e6        01400   CP016586.1      23s-rRNA        23S     3027    658       3027    229775  232140
+m01_flye.racon  chromosome                      chr01   3620046 0.45565498338971383     ab3305ab19034af2b5bb4378f5ddd0e6        01399   CP016586.1      16s-rRNA        16S     1554    11544     232665  234219
+m01_flye.racon  chromosome                      chr01   3620046 0.45565498338971383     ab3305ab19034af2b5bb4378f5ddd0e6        01400   CP016586.1      23s-rRNA        23S     3027    658       3027    235424  237789
+m01_flye.racon  chromosome                      chr01   3620046 0.45565498338971383     ab3305ab19034af2b5bb4378f5ddd0e6        01399   CP016586.1      16s-rRNA        16S     1554    11544     292088  293642
+m01_flye.racon  chromosome                      chr01   3620046 0.45565498338971383     ab3305ab19034af2b5bb4378f5ddd0e6        01400   CP016586.1      23s-rRNA        23S     3027    658       3027    294521  296886
+m01_flye.racon  chromosome                      chr01   3620046 0.45565498338971383     ab3305ab19034af2b5bb4378f5ddd0e6        01399   CP016586.1      16s-rRNA        16S     1554    11544     297411  298965
+m01_flye.racon  chromosome                      chr01   3620046 0.45565498338971383     ab3305ab19034af2b5bb4378f5ddd0e6        01400   CP016586.1      23s-rRNA        23S     3027    658       3027    300042  302407
+m01_flye.racon  chromosome                      chr01   3620046 0.45565498338971383     ab3305ab19034af2b5bb4378f5ddd0e6        01399   CP016586.1      16s-rRNA        16S     1554    11544     478715  480269
+m01_flye.racon  chromosome                      chr01   3620046 0.45565498338971383     ab3305ab19034af2b5bb4378f5ddd0e6        01400   CP016586.1      23s-rRNA        23S     3027    658       3027    481081  483446
+m01_flye.racon  chromosome                      chr01   3620046 0.45565498338971383     ab3305ab19034af2b5bb4378f5ddd0e6        01399   CP016586.1      16s-rRNA        16S     1554    11544     483970  485524
+m01_flye.racon  chromosome                      chr01   3620046 0.45565498338971383     ab3305ab19034af2b5bb4378f5ddd0e6        01400   CP016586.1      23s-rRNA        23S     3027    658       3027    486594  488959
+m01_flye.racon  chromosome                      chr01   3620046 0.45565498338971383     ab3305ab19034af2b5bb4378f5ddd0e6        01399   CP016586.1      16s-rRNA        16S     1554    11544     606803  608357
+m01_flye.racon  chromosome                      chr01   3620046 0.45565498338971383     ab3305ab19034af2b5bb4378f5ddd0e6        01400   CP016586.1      23s-rRNA        23S     3027    658       3027    609488  611853
+m01_flye.racon  chromosome                      chr01   3620046 0.45565498338971383     ab3305ab19034af2b5bb4378f5ddd0e6        01106   CP022101        ISVa15  IS630   1101    1       1101      1316763 1317863
+m01_flye.racon  chromosome                      chr01   3620046 0.45565498338971383     ab3305ab19034af2b5bb4378f5ddd0e6        00699   CP021981        ISVa6   IS30    1091    1       1091      1499380 1500470
+m01_flye.racon  chromosome                      chr01   3620046 0.45565498338971383     ab3305ab19034af2b5bb4378f5ddd0e6        00699   CP021981        ISVa6   IS30    1091    1       1091      1541800 1542890
+m01_flye.racon  chromosome                      chr01   3620046 0.45565498338971383     ab3305ab19034af2b5bb4378f5ddd0e6        01106   CP022101        ISVa15  IS630   1101    1       1101      1547965 1549065
+m01_flye.racon  chromosome                      chr01   3620046 0.45565498338971383     ab3305ab19034af2b5bb4378f5ddd0e6        01106   CP022101        ISVa15  IS630   1101    1       1101      1550163 1551263
+m01_flye.racon  chromosome                      chr01   3620046 0.45565498338971383     ab3305ab19034af2b5bb4378f5ddd0e6        01106   CP022101        ISVa15  IS630   1101    1       1101      1672846 1673946
+m01_flye.racon  chromosome                      chr01   3620046 0.45565498338971383     ab3305ab19034af2b5bb4378f5ddd0e6        01106   CP022101        ISVa15  IS630   1101    1       1101      1701731 1702831
+m01_flye.racon  chromosome                      chr01   3620046 0.45565498338971383     ab3305ab19034af2b5bb4378f5ddd0e6        01106   CP022101        ISVa15  IS630   1101    1       1101      1749814 1750914
+m01_flye.racon  chromosome                      chr01   3620046 0.45565498338971383     ab3305ab19034af2b5bb4378f5ddd0e6        01106   CP022101        ISVa15  IS630   1101    1       1101      1827695 1828795
+m01_flye.racon  chromosome                      chr01   3620046 0.45565498338971383     ab3305ab19034af2b5bb4378f5ddd0e6        01106   CP022101        ISVa15  IS630   1101    1       1101      2148496 2149596
+m01_flye.racon  chromosome                      chr01   3620046 0.45565498338971383     ab3305ab19034af2b5bb4378f5ddd0e6        01106   CP022101        ISVa15  IS630   1101    1       1101      2167787 2168887
+m01_flye.racon  chromosome                      chr01   3620046 0.45565498338971383     ab3305ab19034af2b5bb4378f5ddd0e6        01106   CP022101        ISVa15  IS630   1101    1       1101      2213160 2214260
+m01_flye.racon  chromosome                      chr01   3620046 0.45565498338971383     ab3305ab19034af2b5bb4378f5ddd0e6        01106   CP022101        ISVa15  IS630   1101    1       1101      2268135 2269235
+m01_flye.racon  chromosome                      chr01   3620046 0.45565498338971383     ab3305ab19034af2b5bb4378f5ddd0e6        01106   CP022101        ISVa15  IS630   1101    1       1101      2369752 2370852
+m01_flye.racon  chromosome                      chr01   3620046 0.45565498338971383     ab3305ab19034af2b5bb4378f5ddd0e6        01106   CP022101        ISVa15  IS630   1101    1       1101      2572760 2573860
+m01_flye.racon  chromosome                      chr01   3620046 0.45565498338971383     ab3305ab19034af2b5bb4378f5ddd0e6        01106   CP022101        ISVa15  IS630   1101    1       1101      2773213 2774313
+m01_flye.racon  chromosome                      chr01   3620046 0.45565498338971383     ab3305ab19034af2b5bb4378f5ddd0e6        01400   CP016586.1      23s-rRNA        23S     3027    658       3027    3056367 3058733
+m01_flye.racon  chromosome                      chr01   3620046 0.45565498338971383     ab3305ab19034af2b5bb4378f5ddd0e6        01399   CP016586.1      16s-rRNA        16S     1554    11544     3059895 3061449
+m01_flye.racon  chromosome                      chr01   3620046 0.45565498338971383     ab3305ab19034af2b5bb4378f5ddd0e6        01106   CP022101        ISVa15  IS630   1101    1       1101      3561939 3563039
+m01_flye.racon  chromosome                      chr02   2216041 0.4542068490610056      683fad9c4d08882995585b0d374d10b3        00699   CP021981        ISVa6   IS30    1091    1       1091      481899  482989
+m01_flye.racon  chromosome                      chr02   2216041 0.4542068490610056      683fad9c4d08882995585b0d374d10b3        01106   CP022101        ISVa15  IS630   1101    1       1101      502140  503240
+m01_flye.racon  chromosome                      chr02   2216041 0.4542068490610056      683fad9c4d08882995585b0d374d10b3        01106   CP022101        ISVa15  IS630   1101    1       1101      850866  851966
+m01_flye.racon  chromosome                      chr02   2216041 0.4542068490610056      683fad9c4d08882995585b0d374d10b3        01106   CP022101        ISVa15  IS630   1101    1       1101      1152336 1153436
+m01_flye.racon  chromosome                      chr02   2216041 0.4542068490610056      683fad9c4d08882995585b0d374d10b3        01400   CP016586.1      23s-rRNA        23S     3027    658       3027    1296160 1298525
+m01_flye.racon  chromosome                      chr02   2216041 0.4542068490610056      683fad9c4d08882995585b0d374d10b3        01399   CP016586.1      16s-rRNA        16S     1554    11544     1299836 1301390
+m01_flye.racon  chromosome                      chr02   2216041 0.4542068490610056      683fad9c4d08882995585b0d374d10b3        01106   CP022101        ISVa15  IS630   1101    1       1101      1354770 1355870
+m01_flye.racon  chromosome                      chr02   2216041 0.4542068490610056      683fad9c4d08882995585b0d374d10b3        01106   CP022101        ISVa15  IS630   1101    1       1101      1603364 1604464
+m01_flye.racon  chromosome                      chr02   2216041 0.4542068490610056      683fad9c4d08882995585b0d374d10b3        01106   CP022101        ISVa15  IS630   1101    1       1101      1963508 1964608
+m01_flye.racon  chromosome                      chr02   2216041 0.4542068490610056      683fad9c4d08882995585b0d374d10b3        01106   CP022101        ISVa15  IS630   1101    1       1101      1982957 1984057
+m01_flye.racon  plasmid AE795   AO650   plasmid_02      66980   0.42441027172290235     5b7feb13b6c297143c554f216f4ab9bc        00699   CP021981        ISVa6   IS30    1091    1       1091      34385   35475   1091    minus   100.0   97.15899999999999       0.0     1844
+m01_flye.racon  plasmid AE795   AO650   plasmid_02      66980   0.42441027172290235     5b7feb13b6c297143c554f216f4ab9bc        01106   CP022101        ISVa15  IS630   1101    1       1101      41716   42816   1104    minus   100.0   90.399  0.0     1447
+m01_flye.racon  plasmid AE795   AO650   plasmid_02      66980   0.42441027172290235     5b7feb13b6c297143c554f216f4ab9bc        01106   CP022101        ISVa15  IS630   1101    1       1101      46505   47605   1102    plus    100.0   90.47200000000001       0.0     1452
+m01_flye.racon  plasmid AE795   AO650   plasmid_02      66980   0.42441027172290235     5b7feb13b6c297143c554f216f4ab9bc        01106   CP022101        ISVa15  IS630   1101    1       1101      54244   55344   1104    minus   100.0   90.30799999999999       0.0     1441
+m01_flye.racon  plasmid AE795   AO650   plasmid_02      66980   0.42441027172290235     5b7feb13b6c297143c554f216f4ab9bc        01106   CP022101        ISVa15  IS630   1101    1       1101      56962   58062   1104    minus   100.0   90.30799999999999       0.0     1441
+m01_flye.racon  plasmid AE795   AO650   plasmid_02      66980   0.42441027172290235     5b7feb13b6c297143c554f216f4ab9bc        01106   CP022101        ISVa15  IS630   1101    1       1101      58886   59986   1104    minus   100.0   90.399  0.0     1447
+m01_flye.racon  plasmid AD413   AM969   plasmid_01b     69340   0.44936544563022784     352832786a442f1f1dc995e791e5f382        01106   CP022101        ISVa15  IS630   1101    1       1101      29185   30285   1104    minus   100.0   90.399  0.0     1447
+```
+
+> **Comentario:**
+> - `sample_id`: Identificador único de la muestra analizada (m01_flye.racon).
+> - `molecule_type`: El tipo de molécula donde se encontró el elemento genético móvil (MGE). En este caso, todos los reportados están en el chromosome. Esto podría ser inesperado si esperabas ver elementos en plásmidos. Indica que MOB-recon está identificando secuencias relacionadas con MGEs dentro del cromosoma.
+> - `primary_cluster_id`: Un identificador del clúster primario al que pertenece la secuencia relacionada con el MGE. Está vacío en este reporte.
+> - `secondary_cluster_id`: Un identificador del clúster secundario al que pertenece la secuencia relacionada con el MGE. Está vacío en este reporte.
+> - `contig_id`: El identificador del contig (o cromosoma) donde se localiza la secuencia relacionada con el MGE (chr01).
+> - `size`: El tamaño total (en pares de bases) del contig donde se encontró el MGE (3620046).
+> - `gc`: El contenido de guanina-citosina (GC) promedio del contig (0.45565498338971383).
+> - `md5`: El hash MD5 único del contig.
+> - `mge_id`: Un identificador interno asignado por MOB-recon a la secuencia relacionada con el MGE (ej., 01400, 01399, 01106).
+> - `mge_acs`: El número de acceso en una base de datos para el elemento genético móvil identificado (ej., CP016586.1, CP022101).
+> - `mge_type`: El tipo general de elemento genético móvil identificado (ej., 23s-rRNA, 16s-rRNA, ISVa15). En este caso, se identifican secuencias de ARN ribosomal (que son componentes de ribosomas, no típicamente considerados MGEs) y una secuencia de inserción (ISVa15, que sí es un tipo de MGE).
+> - `mge_subtype`: El subtipo más específico del MGE (ej., 23S, 16S, IS630 - familia de la secuencia de inserción).
+> - `mge_length`: La longitud (en pares de bases) de la secuencia del MGE identificada en la base de datos (3027, 1554, 1101).
+> - `mge_start`: La posición inicial (en la secuencia del MGE de la base de datos) de la alineación con tu genoma (658, 11544, 1).
+> - `mge_end`: La posición final (en la secuencia del MGE de la base de datos) de la alineación con tu genoma (3027, 3812, 1101).
+> - `contig_start`: La posición inicial (en tu contig) donde se encontró la coincidencia con el MGE (187, 5367, 77461).
+> - `contig_end`: La posición final (en tu contig) donde se encontró la coincidencia con el MGE (2552, 123407, 78561).
+> - `length`: La longitud de la alineación entre la secuencia del MGE de la base de datos y tu contig.
+> - `sstrand`: La hebra de la secuencia del MGE de la base de datos que coincide con tu contig (vacío en este caso, podría indicar la hebra directa).
+> - `qcovhsp`: El porcentaje de la longitud de la secuencia de consulta (tu genoma) que está cubierta por el hit de alta puntuación (HSP) en la alineación.
+> - `pident`: El porcentaje de identidad de la secuencia entre la secuencia del MGE de la base de datos y tu contig en la región alineada.
+> - `evalue`: El valor E (expect value) de la alineación BLASTn. Un valor más cercano a cero indica una mayor significancia estadística de la coincidencia.
+> - `bitscore`: La puntuación de bits de la alineación BLASTn. Una puntuación más alta indica una mejor alineación.
+
+```bash
+cat m01_plasmid/mobtyper_results.txt
+
+sample_id       num_contigs     size    gc      md5     rep_type(s)     rep_type_accession(s)   relaxase_type(s)        relaxase_type_accession(s)      mpf_type        mpf_type_accession(s)     orit_type(s)    orit_accession(s)       predicted_mobility      mash_nearest_neighbor   mash_neighbor_distance  mash_neighbor_identification    primary_cluster_id      secondary_cluster_id      predicted_host_range_overall_rank       predicted_host_range_overall_name       observed_host_range_ncbi_rank   observed_host_range_ncbi_name   reported_host_range_lit_rank      reported_host_range_lit_name    associated_pmid(s)
+m01_flye.racon:AE795    2       140403  0.4417213307407961      34ce615f122132c4e8a73903eb2da43b        rep_cluster_1486,rep_cluster_557        000825__CP009849_00015,001953__CP013250_00105     MOBC    CP013250_00065  -       -       -       -       mobilizable     AP014859        0.0127293       Vibrio parahaemolyticus AE795   AO650   genus   Vibrio  genus   Vibrio  ---
+m01_flye.racon:AD413    1       69340   0.44936544563022784     352832786a442f1f1dc995e791e5f382        rep_cluster_1486        000824__CP021150_00027  MOBP    CP028144_00027  -       ---       mobilizable     CP021150        0.00216198      Vibrio campbellii       AD413   AM969   genus   Vibrio  genus   Vibrio  -       -       -
+```
+
+> **Comentario:**
+> - `sample_id`: Identificador único de la muestra analizada. En este caso, incluye el nombre del archivo de ensamblaje (m01_flye.racon) seguido de un sufijo que podría indicar un identificador interno del análisis (AE795, AD413).
+> - `num_contigs`: El número de contigs que MOB-typer agrupó como pertenecientes a este posible plásmido.
+> - `size`: El tamaño total (en pares de bases) de todos los contigs agrupados para este posible plásmido.
+> - `gc`: El contenido de guanina-citosina (GC) promedio de los contigs agrupados para este posible plásmido.
+> - `md5`: El hash MD5 único calculado para la secuencia concatenada de los contigs agrupados, lo que puede servir como un identificador único para esta reconstrucción de plásmido.
+> - `rep_type(s)`: El tipo o los tipos de replicón (región de inicio de la replicación) identificados en los contigs agrupados. Los replicones son claves para la replicación autónoma de los plásmidos. rep_cluster_1486 y rep_cluster_557 son identificadores de clústeres de replicones en la base de datos de MOB-typer.
+> - `rep_type_accession(s)`: Los números de acceso en la base de datos de replicones para los tipos identificados. Estos enlaces te permitirían obtener más información sobre esos replicones específicos (ej., 000825__CP009849_00015).
+> - `relaxase_type(s)`: El tipo o los tipos de relaxasa identificados. Las relaxasas son enzimas clave para la movilización de plásmidos a través de la conjugación. MOBC y MOBP son familias de relaxasas.
+> - `relaxase_type_accession(s)`: Los números de acceso en la base de datos de relaxasas para los tipos identificados (ej., CP013250_00065).
+> - `mpf_type`: El tipo de sistema de apareamiento y transferencia (Mating Pair Formation - MPF) que podría estar asociado con este plásmido, basado en la presencia de genes relacionados con la conjugación. En el primer caso no se identifica (-), mientras que en el segundo tampoco (---).
+> - `mpf_type_accession(s)`: Los números de acceso en la base de datos para el tipo de MPF identificado (no hay en estos casos).
+> - `orit_type(s)`: El tipo o los tipos de origen de transferencia (origin of transfer - oriT) identificados, que es la secuencia de ADN donde se inicia la transferencia durante la conjugación (no se identifica en estos casos).
+> - `orit_accession(s)`: Los números de acceso en la base de datos para el tipo de oriT identificado (no hay en estos casos).
+> - `predicted_mobility`: La predicción de la capacidad de movilización del plásmido. mobilizable indica que el plásmido probablemente puede ser transferido a otras bacterias, a menudo con la ayuda de otro plásmido conjugativo.
+> - `mash_nearest_neighbor`: El identificador del plásmido más similar encontrado en la base de datos de referencia de MOB-typer utilizando la herramienta Mash (una técnica rápida de estimación de la distancia genómica).
+> - `mash_neighbor_distance`: La distancia Mash entre el plásmido reconstruido y su vecino más cercano en la base de datos de referencia. Una distancia menor indica una mayor similitud.
+> - `mash_neighbor_identification`: La identificación del plásmido vecino más cercano, incluyendo información sobre la especie y, a veces, la cepa (ej., Vibrio parahaemolyticus AE795, Vibrio campbellii AD413).
+> - `primary_cluster_id`: Un identificador del clúster primario al que pertenece este plásmido en la base de datos de MOB-typer.
+> - `secondary_cluster_id`: Un identificador del clúster secundario al que pertenece este plásmido, proporcionando una clasificación jerárquica.
+> - `predicted_host_range_overall_rank`: El rango taxonómico (ej., género) del huésped predicho para este plásmido basado en los plásmidos similares en la base de datos.
+> - `predicted_host_range_overall_name`: El nombre taxonómico del huésped predicho (ej., Vibrio).
+> - `observed_host_range_ncbi_rank`: El rango taxonómico del huésped observado en la base de datos NCBI para plásmidos similares.
+> - `observed_host_range_ncbi_name`: El nombre taxonómico del huésped observado en NCBI (ej., Vibrio).
+> - `reported_host_range_lit_rank`: El rango taxonómico del huésped reportado en la literatura para plásmidos similares.
+> - `reported_host_range_lit_name`: El nombre taxonómico del huésped reportado en la literatura (ej., Vibrio).
+> - `associated_pmid(s)`: Los PubMed IDs (si los hay) de artículos científicos asociados con plásmidos similares en la base de datos.
+
+## 7. Identificación de rutas metabólicas
 
 ### Ir a la pagina web de KAAS (https://www.genome.jp/kegg/kaas/)
 
@@ -374,7 +533,7 @@ mge_no,name,synonyms,prediction,type,allele_len,depth,e_value,identity,coverage,
 
 <img width="694" alt="image" src="https://github.com/user-attachments/assets/0e07f44b-355d-40e2-b5a3-613aaeb8f993" />
 
-## 7. Identificación de clústeres de genes de biosíntesis de metabolitos secundarios
+## 8. Identificación de clústeres de genes de biosíntesis de metabolitos secundarios
 
 ### Ir a la pagina web de antiSMASH (https://antismash.secondarymetabolites.org/#!/start)
 
@@ -388,7 +547,7 @@ mge_no,name,synonyms,prediction,type,allele_len,depth,e_value,identity,coverage,
 
 <img width="695" alt="image" src="https://github.com/user-attachments/assets/6b030610-5686-4ebc-acd7-cd9be363f14d" />
 
-## 8. Visualización del genoma
+## 9. Visualización del genoma
 
 ### Con MGCplotter:
 
@@ -449,9 +608,9 @@ S	169	#CCCCCC	Function unknown
 Exportar y visualizar el archivo circos.png
 ```
 
-### Opción 2:
+### Con Proksee:
 
-### Exportar el archivo m01.gbk generado por el programa Prokka
+### Exportar el archivo m01.gbk generado por el programa Prokka e ir al programa Proksee (https://proksee.ca/)
 
 ### Hacer clic en Browse, seleccionar el archivo g00.gbk, esperar que el archivo se cargue, y hacer clic en Create Map
 
@@ -477,7 +636,7 @@ Exportar y visualizar el archivo circos.png
 
 <img width="698" alt="image" src="https://github.com/user-attachments/assets/48a7edcb-f22a-4303-b77d-df8eed927af7" />
 
-## 8.	Anotación del genoma generado en el curso
+## 10. Anotación del genoma generado en el curso
 
 ```bash
 ls -lh ~/genomics/assembly/nanopore
