@@ -356,6 +356,8 @@ mge_no,name,synonyms,prediction,type,allele_len,depth,e_value,identity,coverage,
 ```bash
 cd ~/genomics/annotation
 
+conda activate mob
+
 mkdir plasmid
 
 cd plasmid
