@@ -36,6 +36,9 @@ MGCplotter v1.0.1 https://github.com/moshi4/MGCplotter/
 MobileElementFinder v1.1.2 https://pypi.org/project/MobileElementFinder/
    - **Descripción:** MobileElementFinder es un servidor web y una herramienta de Python para detectar elementos genéticos móviles (MGEs) en datos de secuencias ensambladas. Anota su relación con la resistencia a antibióticos, genes de virulencia y plásmidos. Puede detectar MITEs, ISs, ComTns, Tns, ICEs, IMEs y CIMEs. Requiere secuencias contiguas ensambladas como entrada.
 
+Prinseq v0.20.4 https://prinseq.sourceforge.net/
+   - **Descripción:** Es un programa bioinformático escrito en Perl que se utiliza para el control de calidad, el filtrado y el formateo de datos de secuencias de alto rendimiento (high-throughput sequencing), como las lecturas obtenidas de secuenciadores Illumina, PacBio o Nanopore. La versión lite es una versión "ligera" de PRINSEQ (PRocessing and INformation of SEQuence data). En esencia, PRINSEQ-lite te permite limpiar y preparar tus datos de secuenciación antes de realizar análisis posteriores, como el ensamblaje de genomas, el mapeo de lecturas o el análisis de expresión génica.
+     
 Prokka v1.14.6 https://github.com/tseemann/prokka
    - **Descripción:** Prokka es una herramienta para la anotación rápida de genomas bacterianos, arqueales y virales. Predice genes codificantes de proteínas, ARNr, ARNt, regiones CRISPR y otras características genómicas. Prokka genera archivos de salida listos para la presentación a GenBank/ENA/DDBJ. Puede usar bases de datos BLAST específicas del género y mejorar las predicciones de genes para genomas altamente fragmentados.
 
@@ -402,7 +405,7 @@ MGCplotter -r ~/genomics/annotation/prokka/m01.gbk -o m01_map --assign_cog_color
 ```
 
 > **Comentario:** 
-> - `--assign_cog_color`: Esta opción indica a MGCplotter que asigne colores a los genes en función de sus categorías COG (Clusters of Orthologous Groups). Las categorías COG clasifican los genes según su función,
+> - `--assign_cog_color`: Esta opción indica a MGCplotter que asigne colores a los genes en función de sus categorías COG (Clusters of Orthologous Groups). Las categorías COG clasifican los genes según su función.
 
 ```bash
 cat m01_map/cogclassifier/classifier_stats.txt 
@@ -473,3 +476,32 @@ Exportar y visualizar el archivo circos.png
 ### Hacer clic en la herramienta GC Skew y visualizar el sesgo de GC en el mapa del genoma
 
 <img width="698" alt="image" src="https://github.com/user-attachments/assets/48a7edcb-f22a-4303-b77d-df8eed927af7" />
+
+## 8.	Anotación del genoma generado en el curso
+
+```bash
+ls -lh ~/genomics/assembly/nanopore
+
+total 11M
+-rw-rw-r-- 1 alumno04 alumno04 429K abr 30 16:14 b06_flye.fasta
+-rw-rw-r-- 1 alumno04 alumno04 435K abr 30 16:14 b06_flye.gfa
+drwxrwxr-x 7 alumno04 alumno04 4,0K abr 30 16:26 b06_flye_nanopore
+-rw-rw-r-- 1 alumno04 alumno04 4,8M abr 30 14:17 m01_flye.fasta
+-rw-rw-r-- 1 alumno04 alumno04 4,8M abr 30 14:17 m01_flye.gfa
+drwxrwxr-x 7 alumno04 alumno04 4,0K abr 30 14:37 m01_flye_nanopore
+drwxrwxr-x 2 alumno04 alumno04 4,0K may  7 10:41 racon
+```
+
+```bash
+cd ~/genomics/assembly/nanopore
+
+conda activate genome
+
+prinseq-lite.pl -fasta b06_flye.fasta -min_len 500 -seq_id "b06_00" -out_good b06_genome_final.fasta
+```
+
+> **Comentario:** 
+> - `-fasta b06_flye.fasta`: Esta opción especifica el archivo de entrada en formato FASTA. Este archivo contiene secuencias de contigs ensamblados con Flye.
+> - `-min_len 500`: Esta opción indica que se conservarán solo las secuencias (en este caso, los contigs) que tengan una longitud mínima de 500 nucleótidos. Cualquier secuencia más corta será descartada. Esto es útil para eliminar fragmentos muy pequeños que podrían ser ruido o ensamblajes incompletos.
+> - `-seq_id "b06_00"`: Esta opción establece un prefijo para los identificadores (headers) de las secuencias que pasen el filtro. En este caso, a cada secuencia válida se le asignará un ID que comience con "b06_00". Si hubiera varias secuencias resultantes, PRINSEQ-lite probablemente agregaría un número secuencial a este prefijo (por ejemplo, b06_00_1, b06_00_2, etc.). Esto ayuda a estandarizar y rastrear los identificadores de las secuencias filtradas.
+> - `-out_good b06_genome_final.fasta`: Esta opción especifica el nombre del archivo de salida donde se guardarán las secuencias que pasaron todos los criterios de filtrado (en este caso, solo el criterio de longitud mínima). El archivo de salida se llamará b06_genome_final.fasta y estará en formato FASTA.
