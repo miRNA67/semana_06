@@ -8,13 +8,12 @@ Al finalizar la unidad, el estudiante utiliza herramientas bioinformáticas para
 
 1. Acceso al servidor de cómputo
 2. Anotación global de un genoma
-3. Validación de la anotación global
-4. Identificación de genes de virulencia
-5. Identificación de genes de resistencia a antibióticos
+3. Identificación de genes de virulencia
+4. Identificación de genes de resistencia a antibióticos
+5. Identificación de elementos móviles
 6. Identificación de rutas metabólicas
 7. Identificación de genes de biosíntesis de metabolitos secundarios
-8. Identificación de elementos móviles 
-9. Visualización de la anotación de un genoma
+8. Visualización de la anotación de un genoma
 
 ## Programas requeridos:
 
@@ -175,11 +174,11 @@ VAVCRGEREPVTEAERVWSKYMTRIKRPKRFHTLSGGKPQVEGAEDYTDSDD
 ```bash
 cd ~/genomics/annotation
 
-conda activate abricate
-
 mkdir abricate
 
 cd abricate
+
+conda activate abricate
 
 abricate --list
 
@@ -245,18 +244,7 @@ head m01_vfdb.tab
 > - `PRODUCT`: Describe la función o el nombre del producto génico anotado en la base de datos, incluyendo información sobre vías o sistemas relacionados.
 > - `RESISTANCE`: En el contexto de VFDB, esta columna podría contener información adicional relacionada con la virulencia, aunque en este caso parece estar vacía o no directamente relacionada con resistencia a antibióticos.
 
-
-
-
-
-usa este formato  > - `--db vfdb`:
-
-
-
-
-
-
-## 5. Identificación de genes de resistencia a antibióticos
+## 4. Identificación de genes de resistencia a antibióticos
 
 ```bash
 cd ~/genomics/annotation
@@ -265,33 +253,105 @@ mkdir rgi
 
 cd rgi
 
-mkdir card
+conda activate resistance
 
-cd card
+rgi load --card_json /data/db/card/card.json  --local
 
-conda activate annotation_02
-
-wget https://card.mcmaster.ca/latest/data
-
-tar -xvf data ./card.json
-
-cd ..
-
-rgi load --card_json card/card.json --local
-
-rgi main --input_sequence /home/ins_user/genomics/assembly/nanopore/m01_flye.racon.fasta --output_file m01_rgi --clean --local --num_threads 2
+rgi main --input_sequence ~/genomics/annotation/prokka/m01.fna --output_file m01_rgi --clean --local --num_threads 10
 ```
 
 > **Comentario:** 
 > - `--clean`: Elimina archivos temporales.
 > - `--local`: Especifica que RGI debe utilizar la base de datos local instalada en tu sistema. 
+> - `--output_file m01_rgi`: Define el nombre del archivo de salida donde RGI guardará los resultados de su análisis. En este caso, el archivo se llamará m01_rgi. Por defecto, RGI genera un archivo en formato .tsv (valores separados por tabulaciones).
 
 ```bash
 head -n 2 m01_rgi.txt 
 
-ORF_ID	Contig	Start	Stop	Orientation	Cut_Off	Pass_Bitscore	Best_Hit_Bitscore	Best_Hit_ARO	Best_Identities	ARO	Model_type	SNPs_in_Best_Hit_ARO	Other_SNPs	Drug Class	Resistance Mechanism	AMR Gene Family	Predicted_DNA	Predicted_Protein	CARD_Protein_Sequence	Percentage Length of Reference Sequence	ID	Model_ID	Nudged	Note	Hit_Start	Hit_End	Antibiotic
-contig_1_165 # 169570 # 170943 # -1 # ID=1_165;partial=00;start_type=ATG;rbs_motif=None;rbs_spacer=None;gc_cont=0.547	contig_1_165	169570	170943	-	Perfect	890	926.391	cpxA	100.0	3000830	protein homolog model	n/a	n/a	aminoglycoside antibiotic; aminocoumarin antibiotic	antibiotic efflux	resistance-nodulation-cell division (RND) antibiotic efflux pump	ATGATAGGCAGCTTAACCGCGCGCATCTTCGCCATCTTCTGGCTGACGCTGGCGCTGGTGTTGATGTTGGTTTTGATGTTACCCAAGCTCGATTCACGCCAGATGACCGAGCTTCTGGATAGCGAACAGCGTCAGGGGCTGATGATTGAGCAGCATGTCGAAGCGGAGCTGGCGAACGATCCGCCCAACGATTTAATGTGGTGGCGGCGTCTGTTCCGGGCGATTGATAAGTGGGCACCGCCAGGACAGCGTTTGTTATTGGTGACCACCGAAGGCCGCGTGATCGGCGCTGAACGCAGCGAAATGCAGATCATTCGTAACTTTATTGGTCAGGCCGATAACGCCGATCATCCGCAGAAGAAAAAGTATGGCCGCGTGGAACTGGTCGGTCCGTTCTCCGTGCGTGATGGCGAAGATAATTACCAACTTTATCTGATTCGTCCGGCCAGCAGTTCTCAATCCGATTTCATTAACTTACTGTTTGACCGCCCGCTATTACTGCTGATTGTCACCATGTTGGTCAGTACGCCGCTGCTGTTGTGGTTGGCCTGGAGTCTGGCAAAACCGGCGCGTAAGCTGAAAAACGCTGCCGATGAAGTTGCCCAGGGAAACTTACGCCAGCACCCGGAACTGGAAGCGGGGCCACAGGAATTCCTTGCCGCAGGTGCCAGTTTTAACCAGATGGTCACCGCGCTGGAGCGCATGATGACCTCTCAGCAGCGTCTGCTTTCTGATATCTCTCACGAGCTGCGCACCCCGCTGACGCGTCTGCAACTGGGTACGGCGTTACTGCGCCGTCGTAGCGGTGAAAGCAAGGAACTCGAGCGTATTGAAACCGAAGCGCAACGTCTGGACAGCATGATCAACGATCTGTTGGTGATGTCACGTAATCAGCAAAAAAACGCGCTGGTTAGCGAAACCATCAAAGCCAACCAGTTGTGGAGTGAAGTGCTGGATAACGCGGCGTTCGAAGCCGAGCAAATGGGCAAGTCGTTGACAGTTAACTTCCCGCCTGGGCCGTGGCCGCTGTACGGCAATCCGAACGCCCTGGAAAGTGCGCTGGAAAACATTGTTCGTAATGCTCTGCGTTATTCCCATACGAAGATTGAAGTGGGCTTTGCGGTAGATAAAGACGGTATCACCATTACGGTGGACGACGATGGTCCTGGCGTTAGCCCGGAAGATCGCGAACAGATTTTCCGTCCGTTCTATCGGACCGATGAAGCACGCGATCGTGAATCTGGCGGTACAGGATTGGGGCTGGCGATTGTTGAAACCGCCATTCAGCAGCATCGTGGCTGGGTGAAGGCAGAAGACAGCCCGCTGGGCGGTTTACGGCTGGTGATTTGGTTGCCGCTGTATAAGCGGAGTTAA	MIGSLTARIFAIFWLTLALVLMLVLMLPKLDSRQMTELLDSEQRQGLMIEQHVEAELANDPPNDLMWWRRLFRAIDKWAPPGQRLLLVTTEGRVIGAERSEMQIIRNFIGQADNADHPQKKKYGRVELVGPFSVRDGEDNYQLYLIRPASSSQSDFINLLFDRPLLLLIVTMLVSTPLLLWLAWSLAKPARKLKNAADEVAQGNLRQHPELEAGPQEFLAAGASFNQMVTALERMMTSQQRLLSDISHELRTPLTRLQLGTALLRRRSGESKELERIETEAQRLDSMINDLLVMSRNQQKNALVSETIKANQLWSEVLDNAAFEAEQMGKSLTVNFPPGPWPLYGNPNALESALENIVRNALRYSHTKIEVGFAVDKDGITITVDDDGPGVSPEDREQIFRPFYRTDEARDRESGGTGLGLAIVETAIQQHRGWVKAEDSPLGGLRLVIWLPLYKRS	MIGSLTARIFAIFWLTLALVLMLVLMLPKLDSRQMTELLDSEQRQGLMIEQHVEAELANDPPNDLMWWRRLFRAIDKWAPPGQRLLLVTTEGRVIGAERSEMQIIRNFIGQADNADHPQKKKYGRVELVGPFSVRDGEDNYQLYLIRPASSSQSDFINLLFDRPLLLLIVTMLVSTPLLLWLAWSLAKPARKLKNAADEVAQGNLRQHPELEAGPQEFLAAGASFNQMVTALERMMTSQQRLLSDISHELRTPLTRLQLGTALLRRRSGESKELERIETEAQRLDSMINDLLVMSRNQQKNALVSETIKANQLWSEVLDNAAFEAEQMGKSLTVNFPPGPWPLYGNPNALESALENIVRNALRYSHTKIEVGFAVDKDGITITVDDDGPGVSPEDREQIFRPFYRTDEARDRESGGTGLGLAIVETAIQQHRGWVKAEDSPLGGLRLVIWLPLYKRS	100.00	gnl|BL_ORD_ID|131|hsp_num:0	152			0	1371	neomycin; amikacin; kanamycin A; tobramycin; novobiocin; gentamicin
+ORF_ID  Contig  Start   Stop    Orientation     Cut_Off Pass_Bitscore   Best_Hit_Bitscore       Best_Hit_ARO    Best_Identities ARO     Model_type      SNPs_in_Best_Hit_ARO    Other_SNPsDrug Class      Resistance Mechanism    AMR Gene Family Predicted_DNA   Predicted_Protein       CARD_Protein_Sequence   Percentage Length of Reference Sequence ID      Model_ID        Nudged    Note    Hit_Start       Hit_End Antibiotic
+chr01_343 # 406662 # 407294 # -1 # ID=1_343;partial=00;start_type=ATG;rbs_motif=AGGA;rbs_spacer=11bp;gc_cont=0.447      chr01_343       406662  407294  -       Strict  400     418.313 CRP       95.24   3000518 protein homolog model   n/a     n/a     macrolide antibiotic; fluoroquinolone antibiotic; penam antibiotic efflux       resistance-nodulation-cell division (RND) antibiotic efflux pump  ATGGTTCTAGGTAAACCTCAAACCGACCCAACATTAGAGTGGTTTCTTTCACACTGTCATATTCATAAGTACCCATCAAAGAGCACGCTAATTCACGCGGGCGAAAAAGCAGAGACTTTGTACTACATCGTTAAAGGTTCTGTTGCGGTTCTTATCAAAGACGAAGAAGGTAAGGAAATGATCCTTTCTTACCTAAACCAAGGCGACTTCATTGGTGAGCTTGGTCTATTCGAAGAAGACCAAGAGCGTACAGCTTGGGTTCGCGCTAAATCTCCTTGTGAAGTGGCAGAGATTTCTTTCAAGAAATTCCGTCAACTTATCCAAGTTAACCCAGACATCCTAATGCGCCTTTCTGCGCAAATGGCTCGTCGTCTACAAGTTACTAGCCAAAAAGTGGGTGACCTAGCGTTCCTAGACGTAACTGGTCGTATCGCTCAGACTCTTCTGAACCTTGCTAAACAGCCAGATGCGATGACGCACCCAGACGGCATGCAAATCAAGATCACTCGTCAAGAAATCGGTCAAATTGTTGGCTGTTCTCGTGAGACAGTAGGCCGTATCTTGAAGATGCTAGAAGAGCAGAACCTAATTTCTGCGCACGGTAAAACTATCGTTGTTTACGGAACTCGTTAA     MVLGKPQTDPTLEWFLSHCHIHKYPSKSTLIHAGEKAETLYYIVKGSVAVLIKDEEGKEMILSYLNQGDFIGELGLFEEDQERTAWVRAKSPCEVAEISFKKFRQLIQVNPDILMRLSAQMARRLQVTSQKVGDLAFLDVTGRIAQTLLNLAKQPDAMTHPDGMQIKITRQEIGQIVGCSRETVGRILKMLEEQNLISAHGKTIVVYGTR        MVLGKPQTDPTLEWFLSHCHIHKYPSKSKLIHQGEKAETLYYIVKGSVAVLIKDEEGKEMILSYLNQGDFIGELGLFEEGQERSAWVRAKTACEVAEISYKKFRQLIQVNPDILMRLSAQMARRLQVTSEKVGNLAFLDVTGRIAQTLLNLAKQPDAMTHPDGMQIKITRQEIGQIVGCSRETVGRILKMLEDQNLISAHGKTIVVYGTR        100.00  gnl|BL_ORD_ID|801|hsp_num:0       869                     0       630     erythromycin; cloxacillin; oxacillin; norfloxacin
 ```
+
+> **Comentario:**
+> - `ORF_ID`: Identificador único del Open Reading Frame (ORF) o gen predicho en tu archivo de entrada. Incluye información como el contig (chr01), un número interno (343), las coordenadas (406662 # 407294), la orientación (-1 indica hebra reversa), y metadatos de la predicción del gen.
+> - `Contig`: Nombre del contig (o cromosoma) en el que se localiza el ORF (chr01).
+> - `Start`: Posición inicial (en pares de bases) del ORF en el contig (406662).
+> - `Stop`: Posición final (en pares de bases) del ORF en el contig (407294).
+> - `Orientation`: Dirección de la transcripción del ORF en el contig (- indica la hebra reversa).
+> - `Cut_Off`: El criterio de corte (threshold) utilizado por RGI para clasificar la coincidencia. En este caso, es Strict, lo que indica un alto nivel de confianza en la predicción.
+> - `Pass_Bitscore`: El valor de bitscore que la coincidencia entre tu secuencia y el gen de resistencia en la base de datos CARD superó el umbral definido por el Cut_Off. Un bitscore más alto indica una mejor alineación.
+> - `Best_Hit_Bitscore`: El bitscore de la mejor coincidencia encontrada en la base de datos CARD para este ORF.
+> - `Best_Hit_ARO`: El identificador único (ARO Accession) del gen de resistencia con la mejor coincidencia en la base de datos CARD (3000518). Este código te permite buscar más información sobre este gen en la base de datos CARD.
+> - `Best_Identities`: El porcentaje de identidad entre la secuencia de tu ORF y la secuencia del gen de resistencia con la mejor coincidencia en la base de datos CARD (95.24).
+> - `ARO`: El nombre del modelo de resistencia o el gen de resistencia identificado en la base de datos CARD (CRP).
+> - `Model_type`: El tipo de modelo utilizado por RGI para realizar la predicción (protein homolog model).
+> - `SNPs_in_Best_Hit_ARO`: El número de polimorfismos de un solo nucleótido (SNPs) encontrados dentro de la región que coincide con el mejor hit ARO (n/a en este caso).
+> - `Other_SNPs`: Información sobre otros SNPs encontrados en la secuencia del ORF que podrían estar relacionados con la resistencia (n/a en este caso).
+> - `Drug Class`: La clase o las clases de antibióticos a las que confiere resistencia el gen identificado (macrolide antibiotic; fluoroquinolone antibiotic; penam antibiotic).
+> - `Resistance Mechanism`: El mecanismo molecular por el cual el gen confiere resistencia (efflux).
+> - `AMR Gene Family`: La familia a la que pertenece el gen de resistencia (resistance-nodulation-cell division (RND) antibiotic efflux pump).
+> - `Predicted_DNA`: La secuencia de ADN predicha del ORF.
+> - `Predicted_Protein`: La secuencia de proteína traducida del ORF.
+> - `CARD_Protein_Sequence`: La secuencia de proteína del gen de resistencia correspondiente en la base de datos CARD.
+> - `Percentage Length of Reference Sequence ID`: El porcentaje de la longitud de la secuencia de referencia (en CARD) que está cubierta por la alineación con tu secuencia (100.00).
+> - `Model_ID`: Un identificador interno del modelo utilizado para la predicción (869).
+> - `Nudged`: Indica si la predicción se ajustó basándose en información adicional (0 en este caso, probablemente indicando que no se ajustó).
+> - `Note`: Cualquier nota o comentario adicional sobre la predicción (vacío en este caso).
+> - `Hit_Start`: La posición inicial de la alineación entre tu secuencia y el gen de CARD.
+> - `Hit_End`: La posición final de la alineación entre tu secuencia y el gen de CARD.
+> - `Antibiotic`: Los nombres específicos de los antibióticos a los que se predice resistencia (erythromycin; cloxacillin; oxacillin; norfloxacin).
+
+## 5. Identificación de elementos móviles
+
+```bash
+cd ~/genomics/annotation
+
+mkdir mobile
+
+cd mobile
+
+mefinder find --gff --contig ~/genomics/annotation/prokka/m01.fna m01_mobile
+```
+
+> **Comentario:**
+> - `--gff`: Esta opción indica a MEfinder que la información sobre las características genómicas (como genes) se proporcionará o se espera encontrar en un archivo en formato GFF (General Feature Format). Aunque en este comando se especifica el archivo FASTA (m01.fna) con la opción --contig, MEfinder a menudo utiliza archivos GFF generados por herramientas de anotación como Prokka para integrar la información de los genes en el análisis de los MGEs. Es posible que MEfinder intente generar o utilizar información de tipo GFF internamente o que esta opción esté pensada para un uso con un archivo de contigs acompañado de un GFF separado (aunque no se especifique aquí).
+> - `--contig ~/genomics/annotation/prokka/m01.fna`: Esta opción especifica la ruta al archivo que contiene las secuencias de los contigs (o el genoma ensamblado). En este caso, se está utilizando el archivo FASTA (m01.fna) que presumiblemente contiene el ensamblaje del genoma que quieres analizar en busca de elementos móviles.
+> - `m01_mobile`: Este es el prefijo que MEfinder utilizará para nombrar los archivos de salida que generará. MEfinder produce varios archivos con información sobre los elementos móviles identificados. Estos archivos probablemente incluirán información en formato .tsv (tab-separated values) y posiblemente archivos en formato .gff para visualizar los elementos móviles en el contexto del genoma.
+
+```bash
+head m01_mobile.csv
+ 
+#date: 2025-05-05_22:38
+#sample: m01
+#mge_finder version: 1.1.2
+#mgedb version: 1.1.1
+#blastn version: 2.16.0+
+mge_no,name,synonyms,prediction,type,allele_len,depth,e_value,identity,coverage,gaps,substitution,contig,start,end,cigar
+1,ISVvu6,,predicted,insertion sequence,1092,,0.0,0.743,0.97,33,252,chr01,1504511,1505602,M123 D1 M3 I1 M24 I1 M5 D1 M103 D1 M6 I1 M69 D1 M4 I1 M195 D1 M2 D1 M6 I1 M1 I1 M26 D1 M1 D1 M5 I1 M4 I1 M138 I1 M9 D1 M6 I1 M4 D1 M74 D1 M3 I1 M19 D2 M4 D1 M2 I1 M2 I2 M40 I1 M2 D1 M105 D1 M53 D1 M3 I1 M34
+2,ISVvu6,,predicted,insertion sequence,1092,,0.0,0.743,0.97,33,252,chr01,1510904,1511995,M123 D1 M3 I1 M24 I1 M5 D1 M103 D1 M6 I1 M69 D1 M4 I1 M195 D1 M2 D1 M6 I1 M1 I1 M26 D1 M1 D1 M5 I1 M4 I1 M138 I1 M9 D1 M6 I1 M4 D1 M74 D1 M3 I1 M19 D2 M4 D1 M2 I1 M2 I2 M40 I1 M2 D1 M105 D1 M53 D1 M3 I1 M34
+3,ISVa6,,predicted,insertion sequence,1091,,0,0.972,1.0,0,31,chr01,1499380,1500470,M1091
+4,ISVa6,,predicted,insertion sequence,1091,,0,0.972,1.0,0,31,chr01,1541800,1542890,M1091
+```
+
+> **Comentario:**
+> - `mge_no`: Un número de identificación secuencial asignado por MEfinder a cada elemento genético móvil (MGE) predicho.
+> - `name`: El nombre del MGE encontrado, basado en la base de datos MGEdb (ej., ISVvu6, ISVa6). IS probablemente significa "Insertion Sequence" (secuencia de inserción).
+> - `synonyms`: Otros nombres o sinónimos que pueda tener el MGE en la base de datos (está vacío en estas primeras líneas).
+> - `prediction`: El estado de la predicción del MGE. En este caso, todos son marcados como predicted.
+> - `type`: El tipo de elemento genético móvil predicho (ej., insertion sequence).
+> - `allele_len`: La longitud del alelo (variante específica) del MGE encontrado en la base de datos (en pares de bases).
+> - `depth`: Una medida de la cobertura o profundidad de la lectura en los datos de secuenciación (está vacío en estas primeras líneas, lo que sugiere que probablemente se analizaron secuencias ensambladas y no lecturas sin ensamblar).
+> - `e_value`: El valor E (expect value) del alineamiento BLASTn entre la secuencia genómica y la secuencia del MGE en la base de datos. Un valor E más cercano a cero indica una mayor significancia estadística de la coincidencia.
+> - `identity`: La proporción de bases idénticas en la alineación entre la secuencia genómica y la secuencia del MGE en la base de datos (expresada como un valor entre 0 y 1).
+> - `coverage`: La proporción de la longitud del MGE en la base de datos que está cubierta por la alineación con la secuencia genómica (expresada como un valor entre 0 y 1).
+> - `gaps`: El número total de gaps (inserciones o deleciones) en la alineación.
+> - `substitution`: El número total de sustituciones de bases en la alineación.
+> - `contig`: El identificador del contig (o cromosoma) en tu genoma ensamblado donde se encontró el MGE (ej., chr01).
+> - `start`: La posición inicial (en pares de bases) del MGE predicho en el contig.
+> - `end`: La posición final (en pares de bases) del MGE predicho en el contig.
+> - `cigar`: Una representación compacta de la alineación (Compact Idiosyncratic Gapped Alignment Report). Describe las operaciones de alineamiento (ej., M para match/mismatch, I para inserción, D para deleción) y sus longitudes.
+
+
 
 
 
