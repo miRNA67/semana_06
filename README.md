@@ -360,10 +360,12 @@ Ir a la pagina web de KAAS (https://www.genome.jp/kegg/kaas/)
 Hacer clic en KAAS job request
 ```
 <img width="681" alt="image" src="https://github.com/user-attachments/assets/79333efb-e92d-4ec5-ad25-1cdc4ba7be86" />
- ```bash
+
+```bash
 Clic en seleccionar archivo y escoger el archivo FAA del genoma, colocar en query name e e-mail address lo que corresponda, seleccionar en GENES data set la opción for Prokaryotes, y luego presionar en Compute
 ```
 <img width="521" alt="image" src="https://github.com/user-attachments/assets/a9bd91b6-8d9e-4ded-b9e7-706373a7ad6a" />
+
 ```bash
 Revisar el e-mail y dar clic en Submit
 ```
