@@ -13,7 +13,7 @@ Al finalizar la unidad, el estudiante utiliza herramientas bioinformáticas para
 5. Identificación de elementos móviles
 6. Identificación de rutas metabólicas
 7. Identificación de clústeres de genes de biosíntesis de metabolitos secundarios
-8. Visualización de la anotación de un genoma
+8. Visualización del genoma
 
 ## Programas requeridos:
 
@@ -394,10 +394,86 @@ mge_no,name,synonyms,prediction,type,allele_len,depth,e_value,identity,coverage,
 <img width="695" alt="image" src="https://github.com/user-attachments/assets/6b030610-5686-4ebc-acd7-cd9be363f14d" />
 
 
+## 8. Visualización del genoma
 
+### Con MGCplotter:
 
+```bash
+cd ~/genomics/annotation
 
+mkdir map
+
+cd map
+
+conda activate mgcplotter
+
+MGCplotter -r ~/genomics/annotation/prokka/m01.gbk -o m01_map --assign_cog_color 
 ```
+
+> **Comentario:** 
+> - `--assign_cog_color`: Esta opción indica a MGCplotter que asigne colores a los genes en función de sus categorías COG (Clusters of Orthologous Groups). Las categorías COG clasifican los genes según su función,
+
+```bash
+cat m01_map/cogclassifier/classifier_stats.txt 
+
+84.62% (4395 / 5194) sequences classified into COG functional category.
+```
+
+```bash
+cat m01_map/cogclassifier/classifier_count.tsv
+
+LETTER	COUNT	COLOR	DESCRIPTION
+J	264	#FCCCFC	Translation, ribosomal structure and biogenesis
+A	2	#FCDCFC	RNA processing and modification
+K	266	#FCDCEC	Transcription
+L	201	#FCDCDC	Replication, recombination and repair
+B	0	#FCDCCC	Chromatin structure and dynamics
+D	54	#FCFCDC	Cell cycle control, cell division, chromosome partitioning
+Y	0	#FCFCCC	Nuclear structure
+V	119	#FCFCBC	Defense mechanisms
+T	160	#FCFCAC	Signal transduction mechanisms
+M	267	#ECFCAC	Cell wall/membrane/envelope biogenesis
+N	106	#DCFCAC	Cell motility
+Z	0	#CCFCAC	Cytoskeleton
+W	10	#BCFCAC	Extracellular structures
+U	62	#ACFCAC	Intracellular trafficking, secretion, and vesicular transport
+O	156	#9CFCAC	Posttranslational modification, protein turnover, chaperones
+X	721	#9CFC9C	Mobilome: prophages, transposons
+C	267	#BCFCFC	Energy production and conversion
+G	373	#CCFCFC	Carbohydrate transport and metabolism
+E	363	#DCFCFC	Amino acid transport and metabolism
+F	105	#DCECFC	Nucleotide transport and metabolism
+H	187	#DCDCFC	Coenzyme transport and metabolism
+I	119	#DCCCFC	Lipid transport and metabolism
+P	205	#CCCCFC	Inorganic ion transport and metabolism
+Q	60	#BCCCFC	Secondary metabolites biosynthesis, transport and catabolism
+R	159	#E0E0E0	General function prediction only
+S	169	#CCCCCC	Function unknown
+```
+
+```bash
+Exportar y visualizar el archivo circos.png
+```
+
+### Opción 2:
+
+### Exportar el archivo m01.gbk generado por el programa Prokka
+
+### Hacer clic en Browse, seleccionar el archivo g00.gbk, esperar que el archivo se cargue, y hacer clic en Create Map
+
+
+
+### 
+
+### 
+
+### 
+
+### 
+
+### 
+
+
 
 
 
