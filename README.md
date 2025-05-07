@@ -358,13 +358,13 @@ Cargar el archivo m01.faa en KAAS (https://www.genome.jp/kegg/kaas/)
 ```
 
 <img width="681" alt="image" src="https://github.com/user-attachments/assets/79333efb-e92d-4ec5-ad25-1cdc4ba7be86" />
-Hacer clic en KAAS job request
+# Hacer clic en KAAS job request
 
 <img width="521" alt="image" src="https://github.com/user-attachments/assets/a9bd91b6-8d9e-4ded-b9e7-706373a7ad6a" />
-Clic en seleccionar archivo y escoger el archivo FAA del genoma, colocar en query name e e-mail address lo que corresponda, seleccionar en GENES data set la opción for Prokaryotes, y luego presionar en Compute
+# Clic en seleccionar archivo y escoger el archivo FAA del genoma, colocar en query name e e-mail address lo que corresponda, seleccionar en GENES data set la opción for Prokaryotes, y luego presionar en Compute
 
 <img width="319" alt="image" src="https://github.com/user-attachments/assets/69a6ed1a-a577-41b9-ab63-4df0444c0b2e" />
-Revisar el e-mail y dar clic en Submit
+# Revisar el e-mail y dar clic en Submit
 
 
 
