@@ -27,39 +27,31 @@ WinSCP v6.1 https://winscp.net/eng/download.php
 
 ### Programas bioinformáticos:
 
-Bandage v0.8.1 http://rrwick.github.io/Bandage/
-   - **Descripción:** Bandage es una herramienta para visualizar grafos de ensamblaje de genomas. Permite explorar las relaciones entre los contigs (fragmentos de ADN ensamblados) y puede ayudar a identificar problemas en el ensamblaje, como colapsos de repeticiones o errores. Su nombre es un acrónimo de "Bandage is a nice de novo assembly graph explorer".
-Canu v2.2 http://canu.readthedocs.org/
+Abricate v1.0.1 https://github.com/tseemann/abricate
+   - **Descripción:** Abricate es una herramienta bioinformática de línea de comandos para la detección rápida de genes de resistencia a antibióticos (ARG) en genomas bacterianos completos o ensamblajes de contigs. Compara secuencias genómicas con bases de datos de genes de resistencia conocidos (como CARD, ResFinder y NCBI AMR). Abricate solo soporta contigs, no lecturas FASTQ, y detecta genes de resistencia adquiridos, no mutaciones puntuales. Requiere BLAST+ >= 2.7 y any2fasta.
 
-Barrnap v0.9 https://github.com/tseemann/barrnap
-   - **Descripción:** Barrnap (Bacterial rRNA prediction program) es un programa que predice las secuencias de ARN ribosomal (rRNA) en genomas bacterianos y arqueales. La identificación de los genes de rRNA es importante para estudios filogenéticos y metagenómicos.
+MGCplotter v1.0.1 https://github.com/moshi4/MGCplotter/
+   - **Descripción:** MGCplotter es una herramienta de línea de comandos para la visualización de clústeres de genes metabólicos (MGCs) en genomas microbianos, utilizando un diseño circular con Circos. Toma archivos Genbank como entrada y permite visualizar características básicas del genoma (CDS, ARNr, ARNt, contenido de GC), asignar la clasificación funcional COG y buscar CDS conservados entre especies. Requiere Circos, COGclassifier y MMseqs2.
 
-CheckM v1.2.2 https://ecogenomics.github.io/CheckM/
-   - **Descripción:** CheckM es una herramienta que evalúa la calidad de los metagenomas ensamblados y de los genomas ensamblados a partir de metagenomas (MAGs). Proporciona estimaciones de completitud y contaminación basadas en marcadores genéticos.
+MobileElementFinder v1.1.2 https://pypi.org/project/MobileElementFinder/
+   - **Descripción:** MobileElementFinder es un servidor web y una herramienta de Python para detectar elementos genéticos móviles (MGEs) en datos de secuencias ensambladas. Anota su relación con la resistencia a antibióticos, genes de virulencia y plásmidos. Puede detectar MITEs, ISs, ComTns, Tns, ICEs, IMEs y CIMEs. Requiere secuencias contiguas ensambladas como entrada.
 
-Flye v2.9.2 https://github.com/fenderglass/Flye/
-   - **Descripción:** Flye es un ensamblador de novo enfocado en lecturas largas. Se destaca por su velocidad y eficiencia en el uso de memoria, lo que lo hace adecuado para ensamblar genomas grandes en recursos computacionales limitados.
-Kraken2 v2.1.3 https://ccb.jhu.edu/software/kraken2/
+Prokka v1.14.6 https://github.com/tseemann/prokka
+   - **Descripción:** Prokka es una herramienta para la anotación rápida de genomas bacterianos, arqueales y virales. Predice genes codificantes de proteínas, ARNr, ARNt, regiones CRISPR y otras características genómicas. Prokka genera archivos de salida listos para la presentación a GenBank/ENA/DDBJ. Puede usar bases de datos BLAST específicas del género y mejorar las predicciones de genes para genomas altamente fragmentados.
 
-Minimap2 v2.29.0 https://github.com/lh3/minimap2
-   - **Descripción:** es un alineador de secuencias rápido y versátil diseñado para alinear secuencias largas de ADN o ARN, como lecturas de Nanopore y PacBio contra genomas de referencia o ensamblajes, así como lecturas largas entre sí para el ensamblaje de novo y lecturas cortas contra genomas; se destaca por su velocidad, sensibilidad robusta frente a errores en lecturas largas, su formato de salida PAF y una amplia gama de opciones de personalización mediante indexación eficiente basada en minimizadores, siendo una herramienta fundamental para diversas tareas de análisis genómico.
-
-Quast v5.2.0 http://quast.sourceforge.net/
-   - **Descripción:** QUAST (Quality Assessment Tool for Genome Assemblies) es una herramienta que calcula una amplia variedad de métricas para evaluar la calidad de los ensamblajes de genomas. Proporciona estadísticas detalladas sobre la contigüidad, la precisión y la completitud del ensamblaje.
-
-Racon v1.5.0 https://github.com/lbcb-sci/racon
-   - **Descripción:** Racon es una herramienta para el pulido (polishing) de ensamblajes de genomas, especialmente aquellos generados a partir de lecturas largas. Utiliza las lecturas originales para corregir errores y mejorar la precisión del ensamblaje final.
-
-Unicycler v0.5.1 https://github.com/rrwick/Unicycler
-   - **Descripción:** Unicycler es una herramienta bioinformática de código abierto diseñada para ensamblar genomas bacterianos (y otros genomas pequeños) a partir de datos de secuenciación. Su principal fortaleza radica en su capacidad para manejar conjuntos de datos híbridos, que combinan lecturas cortas y precisas (como las de Illumina) con lecturas largas que abarcan más distancia (como las de Oxford Nanopore o PacBio). Al aprovechar las ventajas de ambos tipos de datos, Unicycler puede generar ensamblajes más completos y contiguos, especialmente en regiones complejas como repeticiones.
-     
+RGI v6.0.3 https://card.mcmaster.ca
+   - **Descripción:** RGI (Resistance Gene Identifier) predice genes de resistencia a antibióticos (ARG) y sus mecanismos en datos de proteínas o nucleótidos, basándose en la base de datos CARD. Puede analizar datos genómicos y metagenómicos. Utiliza Prodigal para la predicción de ORF y DIAMOND para la detección de homólogos.
+   
 ### Herramientas bioinformáticas en línea:
 
-16S-based ID https://www.ezbiocloud.net/identify
-   - **Descripción:** Esta es una herramienta en línea proporcionada por EzBioCloud que permite la identificación taxonómica de bacterias y arqueas basada en la secuencia del gen 16S rRNA, un marcador molecular comúnmente utilizado en estudios de diversidad microbiana.
+AntiSMASH https://antismash.secondarymetabolites.org/#!/start
+   - **Descripción:** AntiSMASH (antibiotics & Secondary Metabolite Analysis SHell) es una herramienta web para la identificación, anotación y análisis de clústeres de genes de biosíntesis de metabolitos secundarios en genomas bacterianos y fúngicos. Integra varias herramientas in silico de análisis de metabolitos secundarios, como NCBI BLAST+, HMMer 3 y Muscle 3.
 
-blastn https://blast.ncbi.nlm.nih.gov/Blast.cgi?PROGRAM=blastn&BLAST_SPEC=GeoBlast&PAGE_TYPE=BlastSearch
-   - **Descripción:** BLASTn (Basic Local Alignment Search Tool - nucleotide) es una herramienta en línea del NCBI (National Center for Biotechnology Information) que permite buscar secuencias de nucleótidos (ADN o ARN) contra bases de datos de secuencias de nucleótidos. Encuentra regiones de similitud local entre tu secuencia de consulta y las secuencias en la base de datos, lo que te permite identificar secuencias relacionadas o similares. 
+KAAS https://www.genome.jp/kegg/kaas/
+   - **Descripción:** KAAS (KEGG Automatic Annotation Server) es un servicio web que asigna información funcional a los genes de un genoma consultado, comparándolos con la base de datos KEGG. Permite obtener anotaciones de vías metabólicas, enzimas y otras funciones biológicas.
+
+Proksee https://proksee.ca/
+   - **Descripción:** Proksee es una herramienta web interactiva para la visualización y exploración de genomas procariotas. Genera mapas genómicos circulares y lineales personalizables que muestran características genómicas como genes, ARNs, regiones CRISPR y resistencia a antibióticos. Utiliza CGView.js como motor de dibujo del genoma.
 
 ## Metodología:
 
