@@ -393,7 +393,6 @@ mge_no,name,synonyms,prediction,type,allele_len,depth,e_value,identity,coverage,
 
 <img width="695" alt="image" src="https://github.com/user-attachments/assets/6b030610-5686-4ebc-acd7-cd9be363f14d" />
 
-
 ## 8. Visualización del genoma
 
 ### Con MGCplotter:
@@ -461,26 +460,24 @@ Exportar y visualizar el archivo circos.png
 
 ### Hacer clic en Browse, seleccionar el archivo g00.gbk, esperar que el archivo se cargue, y hacer clic en Create Map
 
+<img width="566" alt="image" src="https://github.com/user-attachments/assets/8bd5970a-5b02-442b-b058-f488bee5d354" />
 
+### Realizar zoom en el mapa utilizando la rueda del ratón y localizar los tRNA/rRNA
 
-### 
+<img width="698" alt="image" src="https://github.com/user-attachments/assets/64f4d3aa-2636-4c72-917f-f85ead755c40" />
 
-### 
+### Hacer clic en la herramienta GC Content
 
-### 
+<img width="198" alt="image" src="https://github.com/user-attachments/assets/4610c60c-8ac8-49b7-bf18-6c91766efa73" />
 
-### 
+### Hacer clic en OK
 
-### 
+<img width="698" alt="image" src="https://github.com/user-attachments/assets/89839d38-5cf3-493c-a690-6448bbb6d628" />
 
+### Visualizar el contenido GC en el mapa del genoma
 
+<img width="698" alt="image" src="https://github.com/user-attachments/assets/8e603f47-ff06-46df-9fbc-73be63f7f158" />
 
+### Hacer clic en la herramienta GC Skew y visualizar el sesgo de GC en el mapa del genoma
 
-
-
-
-
-
-
-
-
+<img width="698" alt="image" src="https://github.com/user-attachments/assets/48a7edcb-f22a-4303-b77d-df8eed927af7" />
